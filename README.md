@@ -4,6 +4,8 @@ A small, single-screen Sudoku game with a quiet interface and no decorative bure
 
 **Play:** https://dschkn.github.io/sudo-/
 
+Built with React, TypeScript and Vite.
+
 ## Features
 
 - three difficulty levels
