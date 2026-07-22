@@ -1,4 +1,4 @@
-const CACHE = 'sudo-v2'
+const CACHE = 'sudo-v3'
 
 function scoped(path = '') {
   return new URL(path, self.registration.scope).toString()

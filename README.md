@@ -2,7 +2,9 @@
 
 A small, single-screen Sudoku game with a quiet interface and no decorative bureaucracy.
 
-**Play:** https://dschkn.github.io/sudo-/
+**Play:** https://sudo-puzzle.dmitrii-schtschukin.chatgpt.site
+
+**GitHub Pages mirror:** https://dschkn.github.io/sudo-/
 
 Built with React, TypeScript and Vite.
 
@@ -15,8 +17,11 @@ Built with React, TypeScript and Vite.
 - undo and erase
 - wrong-number feedback
 - local game persistence
+- login-and-password accounts stored in the current browser (no email)
 - offline-capable PWA
 - iPhone safe-area support
+
+The current account layer is intentionally local: a login, password hash and game progress stay in that browser. Cross-device accounts will be added with the self-hosted Supabase backend.
 
 ## Run locally
 

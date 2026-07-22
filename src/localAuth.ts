@@ -81,7 +81,7 @@ export async function registerLocalAccount(username: string, password: string): 
 
   const key = normalizeUsername(username)
   const accounts = readAccounts()
-  if (accounts[key]) return { ok: false, message: 'this username already exists' }
+  if (accounts[key]) return { ok: false, message: 'this login is already used on this device' }
 
   const displayName = username.trim()
   accounts[key] = {
@@ -98,11 +98,11 @@ export async function registerLocalAccount(username: string, password: string): 
 export async function signInLocalAccount(username: string, password: string): Promise<AuthResult> {
   const key = normalizeUsername(username)
   const account = readAccounts()[key]
-  if (!account) return { ok: false, message: 'username or password is incorrect' }
+  if (!account) return { ok: false, message: 'login or password is incorrect' }
 
   const passwordHash = await hashPassword(password)
   if (passwordHash !== account.passwordHash) {
-    return { ok: false, message: 'username or password is incorrect' }
+    return { ok: false, message: 'login or password is incorrect' }
   }
 
   localStorage.setItem(SESSION_KEY, account.username)

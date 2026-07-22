@@ -51,9 +51,13 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
     <main className="auth-shell">
       <section className="auth-panel" aria-label="sudo account">
         <div className="auth-brand">
-          <p className="auth-eyebrow">a small sudoku</p>
+          <div className="auth-brand-line" aria-hidden="true">
+            <span>9 × 9</span>
+            <span>quiet mode</span>
+            <span>progress saved</span>
+          </div>
           <h1 className="auth-logo">sudo</h1>
-          <p className="auth-intro">quiet grids. your progress, kept.</p>
+          <p className="auth-intro">a small sudoku with a very short memory form.</p>
         </div>
 
         <div className="auth-mode" role="tablist" aria-label="account action">
@@ -77,12 +81,27 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           </button>
         </div>
 
+        <div className="auth-guide" aria-live="polite">
+          {mode === 'register' ? (
+            <>
+              <p><span>01</span> choose a login</p>
+              <p><span>02</span> set a password</p>
+              <p><span>03</span> keep your progress</p>
+            </>
+          ) : (
+            <p className="auth-guide-single">
+              <span>→</span> use the login and password you created on this device
+            </p>
+          )}
+        </div>
+
         <form className="auth-form" onSubmit={submit}>
           <label>
-            <span>username</span>
+            <span>login</span>
             <input
               name="username"
               type="text"
+              placeholder={mode === 'register' ? 'choose a login' : 'your login'}
               value={username}
               onChange={(event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)}
               autoComplete="username"
@@ -99,6 +118,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             <input
               name="password"
               type="password"
+              placeholder={mode === 'register' ? 'at least 4 characters' : 'your password'}
               value={password}
               onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
               autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
@@ -113,6 +133,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
               <input
                 name="password-repeat"
                 type="password"
+                placeholder="one more time"
                 value={passwordRepeat}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => setPasswordRepeat(event.target.value)}
                 autoComplete="new-password"
@@ -127,12 +148,12 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           </p>
 
           <button className="auth-submit" type="submit" disabled={submitting}>
-            {submitting ? 'one moment…' : mode === 'register' ? 'create account' : 'continue'}
+            {submitting ? 'one moment…' : mode === 'register' ? 'create my account' : 'continue'}
           </button>
         </form>
 
         <p className="auth-footnote">
-          no email. no ceremony. this device remembers the account for now.
+          no email. no ceremony. for now, this browser remembers the account and the game.
         </p>
       </section>
     </main>

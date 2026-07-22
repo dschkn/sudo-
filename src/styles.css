@@ -63,12 +63,44 @@ input:focus-visible {
 .auth-panel {
   width: min(100%, 430px);
   display: grid;
-  gap: 28px;
+  gap: 24px;
   animation: auth-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .auth-brand {
+  position: relative;
   padding-top: 3vh;
+}
+
+.auth-brand::after {
+  content: "";
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  width: 48px;
+  aspect-ratio: 1;
+  opacity: 0.48;
+  background:
+    linear-gradient(to right, transparent 31%, #b9b9b1 32%, #b9b9b1 35%, transparent 36%, transparent 64%, #b9b9b1 65%, #b9b9b1 68%, transparent 69%),
+    linear-gradient(to bottom, transparent 31%, #b9b9b1 32%, #b9b9b1 35%, transparent 36%, transparent 64%, #b9b9b1 65%, #b9b9b1 68%, transparent 69%);
+}
+
+.auth-brand-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #81817a;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.auth-brand-line span:not(:last-child)::after {
+  content: "·";
+  margin-left: 8px;
+  color: #b1b1aa;
 }
 
 .auth-eyebrow,
@@ -121,6 +153,45 @@ input:focus-visible {
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
 }
 
+.auth-guide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.auth-guide p {
+  min-width: 0;
+  margin: 0;
+  padding: 10px 9px;
+  border-top: 1px solid rgba(17, 17, 15, 0.16);
+  color: #676760;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.auth-guide p span {
+  display: block;
+  margin-bottom: 5px;
+  color: #a0a099;
+  font-variant-numeric: tabular-nums;
+}
+
+.auth-guide .auth-guide-single {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  font-size: 11px;
+}
+
+.auth-guide .auth-guide-single span {
+  display: inline;
+  margin: 0;
+  color: var(--accent);
+  font-size: 16px;
+}
+
 .auth-form {
   display: grid;
   gap: 14px;
@@ -148,6 +219,10 @@ input:focus-visible {
   box-shadow: 0 7px 20px rgba(0, 0, 0, 0.025);
   font-size: 16px;
   transition: border-color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+}
+
+.auth-form input::placeholder {
+  color: #aaa9a2;
 }
 
 .auth-form input:focus {
@@ -480,7 +555,7 @@ h1 {
   }
 
   .auth-panel {
-    gap: 17px;
+    gap: 14px;
   }
 
   .auth-brand {
@@ -493,6 +568,18 @@ h1 {
 
   .auth-intro {
     margin-top: 10px;
+  }
+
+  .auth-brand-line {
+    margin-bottom: 5px;
+  }
+
+  .auth-brand::after {
+    width: 38px;
+  }
+
+  .auth-guide p {
+    padding-block: 7px;
   }
 
   .auth-form {
