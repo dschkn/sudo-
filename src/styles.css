@@ -8,6 +8,8 @@
   --line: rgba(17, 17, 15, 0.26);
   --line-strong: #11110f;
   --accent: #2f66d0;
+  --surface: #ffffff;
+  --muted: #73736d;
 }
 
 * {
@@ -28,18 +30,24 @@ body {
   overscroll-behavior: none;
 }
 
-button {
+button,
+input {
   font: inherit;
   color: inherit;
   -webkit-tap-highlight-color: transparent;
+}
+
+button {
   touch-action: manipulation;
 }
 
-button:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
+.auth-shell,
 .app-shell {
   min-height: 100vh;
   min-height: 100dvh;
@@ -52,6 +60,142 @@ button:focus-visible {
     max(14px, env(safe-area-inset-left));
 }
 
+.auth-panel {
+  width: min(100%, 430px);
+  display: grid;
+  gap: 28px;
+  animation: auth-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.auth-brand {
+  padding-top: 3vh;
+}
+
+.auth-eyebrow,
+.eyebrow {
+  margin: 0 0 2px;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.auth-logo {
+  margin: 0;
+  font-size: clamp(76px, 24vw, 112px);
+  line-height: 0.82;
+  letter-spacing: -0.085em;
+  font-weight: 780;
+}
+
+.auth-intro {
+  margin: 18px 0 0;
+  font-size: 14px;
+  color: #686861;
+}
+
+.auth-mode {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: #e8e8e4;
+}
+
+.auth-mode button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #686861;
+  font-size: 13px;
+  font-weight: 680;
+  cursor: pointer;
+  transition: background 130ms ease, color 130ms ease, box-shadow 130ms ease;
+}
+
+.auth-mode button.is-active {
+  background: var(--surface);
+  color: #11110f;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 7px;
+}
+
+.auth-form label > span {
+  padding-left: 2px;
+  font-size: 12px;
+  font-weight: 650;
+  color: #55554f;
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid rgba(17, 17, 15, 0.16);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.025);
+  font-size: 16px;
+  transition: border-color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+}
+
+.auth-form input:focus {
+  border-color: rgba(47, 102, 208, 0.65);
+  background: #fff;
+  box-shadow: 0 9px 24px rgba(47, 102, 208, 0.08);
+}
+
+.auth-message {
+  min-height: 17px;
+  margin: -2px 2px 0;
+  font-size: 12px;
+  color: transparent;
+  transition: color 120ms ease;
+}
+
+.auth-message.is-visible {
+  color: #b33b34;
+}
+
+.auth-submit {
+  min-height: 52px;
+  border: 0;
+  border-radius: 13px;
+  background: #11110f;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 720;
+  cursor: pointer;
+  transition: transform 80ms ease, opacity 120ms ease;
+}
+
+.auth-submit:active {
+  transform: scale(0.985);
+}
+
+.auth-submit:disabled {
+  opacity: 0.55;
+}
+
+.auth-footnote {
+  margin: -10px 2px 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #85857e;
+  text-align: center;
+}
+
 .game {
   width: min(100%, 430px);
 }
@@ -60,16 +204,8 @@ button:focus-visible {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
   margin-bottom: 18px;
-}
-
-.eyebrow {
-  margin: 0 0 2px;
-  font-size: 12px;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-  color: #73736d;
 }
 
 h1 {
@@ -80,8 +216,15 @@ h1 {
   font-weight: 760;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .new-button,
-.status-pill {
+.status-pill,
+.account-button {
   border: 0;
   background: #e8e8e4;
   border-radius: 999px;
@@ -89,10 +232,34 @@ h1 {
   padding: 0 14px;
   font-size: 13px;
   font-weight: 650;
+  cursor: pointer;
+}
+
+.account-button {
+  max-width: 132px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  background: transparent;
+  color: #5f5f59;
+}
+
+.account-button span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-button small {
+  font-size: 10px;
+  color: #92928a;
 }
 
 .new-button:active,
-.status-pill:active {
+.status-pill:active,
+.account-button:active {
   transform: scale(0.97);
 }
 
@@ -283,10 +450,58 @@ h1 {
   background: #d7d7d1;
 }
 
+@keyframes auth-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 390px) {
+  .topbar-actions {
+    gap: 3px;
+  }
+
+  .account-button {
+    max-width: 100px;
+    padding-inline: 8px;
+  }
+}
+
 @media (max-height: 690px) {
+  .auth-shell,
   .app-shell {
     padding-top: max(10px, env(safe-area-inset-top));
     padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  .auth-panel {
+    gap: 17px;
+  }
+
+  .auth-brand {
+    padding-top: 0;
+  }
+
+  .auth-logo {
+    font-size: 64px;
+  }
+
+  .auth-intro {
+    margin-top: 10px;
+  }
+
+  .auth-form {
+    gap: 9px;
+  }
+
+  .auth-form input,
+  .auth-submit {
+    min-height: 44px;
   }
 
   .topbar {
@@ -320,5 +535,6 @@ h1 {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
