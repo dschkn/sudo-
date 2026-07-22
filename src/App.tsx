@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import AuthScreen from './AuthScreen'
+import { clearStoredSession, getStoredSession } from './localAuth'
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type CellValue = number | null
@@ -12,6 +14,11 @@ type Puzzle = {
 type HistoryEntry = {
   board: CellValue[]
   notes: Notes
+}
+
+type GameProps = {
+  username: string
+  onSignOut: () => void
 }
 
 const PUZZLES: Record<Difficulty, Puzzle> = {
@@ -29,7 +36,7 @@ const PUZZLES: Record<Difficulty, Puzzle> = {
   },
 }
 
-const STORAGE_KEY = 'sudo.game.v1'
+const LEGACY_STORAGE_KEY = 'sudo.game.v1'
 
 const difficultyLabels: Record<Difficulty, string> = {
   easy: 'easy',
@@ -123,9 +130,29 @@ function IconErase() {
 }
 
 export default function App() {
+  const [username, setUsername] = useState<string | null>(() => getStoredSession())
+
+  const signOut = () => {
+    clearStoredSession()
+    setUsername(null)
+  }
+
+  if (!username) return <AuthScreen onAuthenticated={setUsername} />
+
+  return <SudokuGame username={username} onSignOut={signOut} />
+}
+
+function SudokuGame({ username, onSignOut }: GameProps) {
+  const storageKey = useMemo(
+    () => `sudo.game.v2.${encodeURIComponent(username.toLocaleLowerCase())}`,
+    [username],
+  )
+
   const initial = useMemo(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null')
+      const userSave = localStorage.getItem(storageKey)
+      const legacySave = localStorage.getItem(LEGACY_STORAGE_KEY)
+      const saved = JSON.parse(userSave ?? legacySave ?? 'null')
       if (saved?.puzzle?.length === 81 && saved?.solution?.length === 81) {
         return saved
       }
@@ -143,7 +170,7 @@ export default function App() {
       elapsed: 0,
       completed: false,
     }
-  }, [])
+  }, [storageKey])
 
   const [difficulty, setDifficulty] = useState<Difficulty>(initial.difficulty)
   const [puzzle, setPuzzle] = useState(initial.puzzle)
@@ -171,10 +198,10 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem(
-      STORAGE_KEY,
+      storageKey,
       JSON.stringify({ difficulty, puzzle, solution, board, notes, elapsed, completed }),
     )
-  }, [difficulty, puzzle, solution, board, notes, elapsed, completed])
+  }, [storageKey, difficulty, puzzle, solution, board, notes, elapsed, completed])
 
   const chooseDifficulty = () => {
     const order: Difficulty[] = ['easy', 'medium', 'hard']
@@ -264,9 +291,15 @@ export default function App() {
             <p className="eyebrow">a small sudoku</p>
             <h1>sudo</h1>
           </div>
-          <button className="new-button" type="button" onClick={() => startNew()}>
-            new
-          </button>
+          <div className="topbar-actions">
+            <button className="account-button" type="button" onClick={onSignOut} title="sign out">
+              <span>{username}</span>
+              <small>exit</small>
+            </button>
+            <button className="new-button" type="button" onClick={() => startNew()}>
+              new
+            </button>
+          </div>
         </header>
 
         <div className="status-row" aria-label="game status">
