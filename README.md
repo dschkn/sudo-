@@ -4,8 +4,6 @@ A small, single-screen Sudoku game with a quiet interface and no decorative bure
 
 **Play:** https://sudo-puzzle.dmitrii-schtschukin.chatgpt.site
 
-**GitHub Pages mirror:** https://dschkn.github.io/sudo-/
-
 Built with React, TypeScript and Vite.
 
 ## Features
@@ -38,6 +36,6 @@ npm run build
 npm run preview
 ```
 
-The `main` branch is built and deployed to GitHub Pages by GitHub Actions.
+The public build is deployed with ChatGPT Sites.
 
 (c) Dmitrii Shchukin 2026
